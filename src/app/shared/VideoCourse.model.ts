@@ -1,6 +1,6 @@
-import { videoRecord } from "./videoRecord";
+import { VideoRecord } from "./VideoRecord";
 
-export class VideoCourse implements videoRecord {
+export class VideoCourse implements VideoRecord {
   constructor(
     public id: number,
     public title: string,
