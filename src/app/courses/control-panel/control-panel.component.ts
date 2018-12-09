@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./control-panel.component.less']
 })
 export class ControlPanelComponent implements OnInit {
+  public txtToSearch: string;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  onSearch(): void {
+    this.txtToSearch && console.log(this.txtToSearch);
+  }
 }
