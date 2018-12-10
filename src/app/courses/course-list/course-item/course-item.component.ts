@@ -11,22 +11,12 @@ export class CourseItemComponent implements OnInit {
   @Input() item: VideoCourse;
   @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
 
-  formattedDate: string;
   formattedDuration: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.formattedDate = this.getFormattedDate(this.item.creationDate);
     this.formattedDuration = this.getFormattedDuration(this.item.duration);
-  }
-
-  getFormattedDate(dateObj: Date): string {
-    const month: number = dateObj.getUTCMonth();
-    const date: number = dateObj.getUTCDate();
-    const year: number = dateObj.getUTCFullYear()
-
-    return `${month}.${date}.${year}`;
   }
 
   getFormattedDuration(allMinutes: number): string {

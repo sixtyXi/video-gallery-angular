@@ -4,7 +4,7 @@
       <h2 class="course-item__title">{{item.title}}</h2>
       <div class="course-item__params">
         <span class="course-item__duration">{{formattedDuration}}</span>
-        <span class="course-item__date">{{formattedDate}}</span>
+        <span class="course-item__date">{{item.creationDate | date:'MM.dd.yyyy'}}</span>
       </div>
     </header>
     <p class="course-item__desc">
