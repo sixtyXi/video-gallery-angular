@@ -1,4 +1,4 @@
-export interface videoRecord {
+export interface VideoRecord {
   id: number;
   title: string;
   creationDate: Date;

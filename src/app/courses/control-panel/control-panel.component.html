@@ -1,3 +1,5 @@
-<p>
-  control-panel works!
-</p>
+<div class="search-control">
+  <input [(ngModel)]="txtToSearch" class="search-control__input" type="text" placeholder="Text to search">
+  <button (click)="onSearch()" class="search-control__btn" type="button">Search</button>
+</div>
+<button class="add-control-btn" type="button">Add course</button>
