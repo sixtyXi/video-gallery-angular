@@ -4,16 +4,15 @@ import { VideoCourse } from '../../../shared/VideoCourse.model';
 @Component({
   selector: 'app-course-item',
   templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.less']
+  styleUrls: [ './course-item.component.less' ]
 })
 export class CourseItemComponent implements OnInit {
-
   @Input() item: VideoCourse;
-  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
+  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
 
   formattedDuration: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.formattedDuration = this.getFormattedDuration(this.item.duration);
@@ -25,18 +24,17 @@ export class CourseItemComponent implements OnInit {
     let formattedDuration: string = '';
 
     if (hours) {
-      formattedDuration += `${hours}h `
+      formattedDuration += `${hours}h `;
     }
 
     if (minutes) {
-      formattedDuration += `${minutes}min`
+      formattedDuration += `${minutes}min`;
     }
-    
+
     return formattedDuration;
   }
 
-  delete() {
-    this.onDelete.emit(this.item.id);
+  click(): void {
+    this.delete.emit(this.item.id);
   }
-
 }
