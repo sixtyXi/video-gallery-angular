@@ -7,12 +7,10 @@
         <span class="course-item__date">{{item.creationDate | date:'MM.dd.yyyy'}}</span>
       </div>
     </header>
-    <p class="course-item__desc">
-      {{item.description}}
-    </p>
+    <p class="course-item__desc">{{item.description}}</p>
   </div>
   <div class="course-item__controls">
     <button class="course-item__btn">Edit</button>
-    <button (click)="delete()" class="course-item__btn">Delete</button>
+    <button (click)="click()" class="course-item__btn course-item__btn--delete">Delete</button>
   </div>
 </article>

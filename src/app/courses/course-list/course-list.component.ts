@@ -5,13 +5,12 @@ import { VideoRecord } from 'src/app/shared/VideoRecord';
 @Component({
   selector: 'app-course-list',
   templateUrl: './course-list.component.html',
-  styleUrls: ['./course-list.component.less']
+  styleUrls: [ './course-list.component.less' ]
 })
 export class CourseListComponent implements OnInit {
+  public courses: VideoRecord[];
 
-  public courses: VideoRecord[]; 
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.courses = COURSES;
@@ -24,5 +23,4 @@ export class CourseListComponent implements OnInit {
   deleteById(id: number): void {
     console.log(`${id} - deleted course's id`);
   }
- 
 }

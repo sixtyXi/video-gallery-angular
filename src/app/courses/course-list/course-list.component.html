@@ -1,5 +1,5 @@
 <app-course-item *ngFor="let item of courses" 
   [item]="item"
-  (onDelete)="deleteById($event)">
+  (delete)="deleteById($event)">
 </app-course-item>
 <button (click)="onLoadMore()" class="load-more-btn" type="button">Load More</button>
