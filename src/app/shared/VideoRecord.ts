@@ -4,4 +4,5 @@ export interface VideoRecord {
   creationDate: Date;
   duration: number;
   description: string;
+  topRated: boolean;
 }
