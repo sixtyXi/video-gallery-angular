@@ -8,7 +8,7 @@ import { VideoRecord } from 'src/app/shared/VideoRecord';
   styleUrls: [ './course-list.component.less' ]
 })
 export class CourseListComponent implements OnInit {
-  public courses: VideoRecord[];
+  public courses: VideoRecord[] = [];
 
   constructor() {}
 
