@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-control-panel',
@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./control-panel.component.less']
 })
 export class ControlPanelComponent implements OnInit {
-  public txtToSearch: string;
+  @Output() search: EventEmitter<string> = new EventEmitter<string>();
+  public txtToSearch: string = '';
 
   constructor() { }
 
@@ -14,6 +15,6 @@ export class ControlPanelComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.txtToSearch && console.log(this.txtToSearch);
+    this.search.emit(this.txtToSearch);
   }
 }

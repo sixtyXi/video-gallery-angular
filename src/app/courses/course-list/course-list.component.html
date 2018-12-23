@@ -1,3 +1,5 @@
+<app-control-panel (search)="filterByTitle($event)"></app-control-panel>
+
 <div *ngIf='courses.length; then courseList else noData'></div>
 
 <ng-template #courseList>
