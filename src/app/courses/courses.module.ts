@@ -6,9 +6,10 @@ import { CourseListComponent } from './course-list/course-list.component';
 import { CoursesPageComponent } from './courses-page/courses-page.component';
 import { CourseItemComponent } from './course-list/course-item/course-item.component';
 import { StyleByDateDirective } from './course-list/course-item/style-by-date.directive';
+import { FormatDurationPipe } from './course-list/course-item/format-duration.pipe';
 
 @NgModule({
-  declarations: [ControlPanelComponent, CourseListComponent, CoursesPageComponent, CourseItemComponent, StyleByDateDirective],
+  declarations: [ControlPanelComponent, CourseListComponent, CoursesPageComponent, CourseItemComponent, StyleByDateDirective, FormatDurationPipe],
   imports: [
     CommonModule,
     FormsModule
