@@ -4,14 +4,14 @@ export const COURSES: VideoCourse[] = [
   { 
     id: 1,
     title: 'Video Course 1',
-    creationDate: new Date(2018, 4, 23),
+    creationDate: new Date(2019, 4, 23),
     duration: 88,
     description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium soluta libero similique aperiam, velit inventore tempora sequi repudiandae sunt nesciunt!'
   },
   { 
     id: 2,
     title: 'Video Course 2',
-    creationDate: new Date(2018, 5, 10),
+    creationDate: new Date(2018, 11, 21),
     duration: 27,
     description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium soluta libero similique aperiam, velit inventore tempora sequi repudiandae sunt nesciunt!'
   },
@@ -32,7 +32,7 @@ export const COURSES: VideoCourse[] = [
   { 
     id: 5,
     title: 'Video Course 5',
-    creationDate: new Date(2018, 7, 21),
+    creationDate: new Date(2018, 11, 19),
     duration: 30,
     description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium soluta libero similique aperiam, velit inventore tempora sequi repudiandae sunt nesciunt!'
   },
