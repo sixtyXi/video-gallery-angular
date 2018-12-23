@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { COURSES } from './mock-courses';
 import { VideoRecord } from 'src/app/shared/VideoRecord';
+import { OrderByPipe } from './course-item/order-by.pipe';
 
 @Component({
   selector: 'app-course-list',
@@ -13,7 +14,7 @@ export class CourseListComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.courses = COURSES;
+    this.courses = new OrderByPipe().transform(COURSES, 'creationDate');
   }
 
   onLoadMore(): void {
