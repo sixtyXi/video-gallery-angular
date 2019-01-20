@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
 
 import { CourseItemComponent } from './course-item.component';
 import { VideoCourse } from 'src/app/shared/VideoCourse.model';
-import { Component } from '@angular/core';
+import { StyleByDateDirective } from './style-by-date.directive';
+import { FormatDurationPipe } from './format-duration.pipe';
 
 const mockItem: VideoCourse = {
   id: 1,
   title: 'Video Course 1',
   creationDate: new Date(2018, 4, 23),
   duration: 88,
-  description: 'Lorem, ipsum dolor sit amet consectetur'
+  description: 'Lorem, ipsum dolor sit amet consectetur',
+  topRated: false
 };
-
-const expectedFormattedDuration = '1h 28min';
 
 let component: CourseItemComponent;
 
@@ -23,16 +24,8 @@ describe('CourseItemComponentClassTest', () => {
 
   it('raises #item.id when clicked', () => {
     component.item = mockItem;
-    component.delete.subscribe((courseId) => expect(courseId).toBe(mockItem.id));
+    component.onDelete.subscribe((courseId) => expect(courseId).toBe(mockItem.id));
     component.click();
-  });
-
-  it('should return formatted duration', () => {
-    const duration = mockItem.duration;
-    const expectedValue = expectedFormattedDuration;
-    const formattedValue = component.getFormattedDuration(duration);
-
-    expect(formattedValue).toBe(expectedValue);
   });
 });
 
@@ -42,7 +35,7 @@ describe('CourseItemComponentStandAloneTest', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent ]
+      declarations: [ CourseItemComponent, StyleByDateDirective, FormatDurationPipe ]
     }).compileComponents();
   });
 
@@ -73,7 +66,7 @@ describe('CourseItemComponentStandAloneTest', () => {
   });
 
   it('should display formatted duration in course-item__duration', () => {
-    const expectedValue = expectedFormattedDuration;
+    const expectedValue = '1h 28min';;
     const el: HTMLElement = hostElement.querySelector('.course-item__duration');
 
     expect(el.textContent).toBe(expectedValue);
@@ -99,7 +92,7 @@ describe('CourseItemComponentTestHostApproach', () => {
   @Component({
     template: `<app-course-item
         [item]="item"
-        (delete)="deleteById($event)">
+        (onDelete)="deleteById($event)">
       </app-course-item>`
   })
   class TestHostComponent {
@@ -114,7 +107,7 @@ describe('CourseItemComponentTestHostApproach', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent, TestHostComponent ]
+      declarations: [ CourseItemComponent, TestHostComponent, StyleByDateDirective, FormatDurationPipe ]
     }).compileComponents();
   });
 

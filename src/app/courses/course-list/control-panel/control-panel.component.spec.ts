@@ -39,11 +39,11 @@ describe('ControlPanelComponent', () => {
     expect(component.txtToSearch).toBe(inputValue);
   });
 
-  it('should invoke #onSearch on search button click', () => {
+  it('should invoke #search on search button click', () => {
     const searchBtn: HTMLButtonElement = hostElement.querySelector('.search-control__btn');
 
-    spyOn(component, 'onSearch');
+    spyOn(component, 'search');
     searchBtn.dispatchEvent(new Event('click'));
-    expect(component.onSearch).toHaveBeenCalled();
+    expect(component.search).toHaveBeenCalled();
   });
 });

@@ -8,11 +8,11 @@ import { VideoCourse } from '../../../shared/VideoCourse.model';
 })
 export class CourseItemComponent {
   @Input() item: VideoCourse;
-  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
+  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
   click(): void {
-    this.delete.emit(this.item.id);
+    this.onDelete.emit(this.item.id);
   }
 }

@@ -18,7 +18,7 @@ export class CourseListComponent implements OnInit {
   ngOnInit() {
     if (COURSES.length) {
       this.allCourses = COURSES;
-      this.courses = new OrderByPipe().transform(this.allCourses.concat(), 'creationDate');
+      this.courses = this.allCourses.concat();
     }
   }
 
@@ -31,6 +31,6 @@ export class CourseListComponent implements OnInit {
   }
 
   filterByTitle(text: string): void {
-    this.courses = new FilterByTitlePipe().transform(this.allCourses, text);
+    this.courses = new FilterByTitlePipe().transform(this.allCourses.concat(), text);
   }
 }
