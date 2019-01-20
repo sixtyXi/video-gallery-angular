@@ -11,11 +11,17 @@ import { OrderByPipe } from './course-list/order-by.pipe';
 import { FilterByTitlePipe } from './course-list/filter-by-title.pipe';
 
 @NgModule({
-  declarations: [ControlPanelComponent, CourseListComponent, CoursesPageComponent, CourseItemComponent, StyleByDateDirective, FormatDurationPipe, OrderByPipe, FilterByTitlePipe],
-  imports: [
-    CommonModule,
-    FormsModule
+  declarations: [
+    ControlPanelComponent,
+    CourseListComponent,
+    CoursesPageComponent,
+    CourseItemComponent,
+    StyleByDateDirective,
+    FormatDurationPipe,
+    OrderByPipe,
+    FilterByTitlePipe,
   ],
-  exports: [CoursesPageComponent]
+  imports: [ CommonModule, FormsModule ],
+  exports: [ CoursesPageComponent ]
 })
-export class CoursesModule { }
+export class CoursesModule {}

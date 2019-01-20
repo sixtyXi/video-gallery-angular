@@ -1,4 +1,4 @@
-import { VideoCourse } from '../../shared/VideoCourse.model';
+import { VideoCourse } from '../shared/VideoCourse.model';
 
 export const COURSES: VideoCourse[] = [
   { 
