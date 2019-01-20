@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { VideoCourse } from '../../../shared/VideoCourse.model';
 
 @Component({
@@ -6,35 +6,13 @@ import { VideoCourse } from '../../../shared/VideoCourse.model';
   templateUrl: './course-item.component.html',
   styleUrls: [ './course-item.component.less' ]
 })
-export class CourseItemComponent implements OnInit {
+export class CourseItemComponent {
   @Input() item: VideoCourse;
-  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
-
-  formattedDuration: string;
+  @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
-  ngOnInit() {
-    this.formattedDuration = this.getFormattedDuration(this.item.duration);
-  }
-
-  getFormattedDuration(allMinutes: number): string {
-    const hours: number = Math.floor(allMinutes / 60);
-    const minutes: number = allMinutes % 60;
-    let formattedDuration: string = '';
-
-    if (hours) {
-      formattedDuration += `${hours}h `;
-    }
-
-    if (minutes) {
-      formattedDuration += `${minutes}min`;
-    }
-
-    return formattedDuration;
-  }
-
   click(): void {
-    this.delete.emit(this.item.id);
+    this.onDelete.emit(this.item.id);
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { COURSES } from './mock-courses';
 import { VideoRecord } from 'src/app/shared/VideoRecord';
+import { OrderByPipe } from './order-by.pipe';
+import { FilterByTitlePipe } from './filter-by-title.pipe';
 
 @Component({
   selector: 'app-course-list',
@@ -8,12 +10,16 @@ import { VideoRecord } from 'src/app/shared/VideoRecord';
   styleUrls: [ './course-list.component.less' ]
 })
 export class CourseListComponent implements OnInit {
-  public courses: VideoRecord[];
+  private allCourses: VideoRecord[];
+  public courses: VideoRecord[] = [];
 
   constructor() {}
 
   ngOnInit() {
-    this.courses = COURSES;
+    if (COURSES.length) {
+      this.allCourses = COURSES;
+      this.courses = this.allCourses.concat();
+    }
   }
 
   onLoadMore(): void {
@@ -22,5 +28,9 @@ export class CourseListComponent implements OnInit {
 
   deleteById(id: number): void {
     console.log(`${id} - deleted course's id`);
+  }
+
+  filterByTitle(text: string): void {
+    this.courses = new FilterByTitlePipe().transform(this.allCourses.concat(), text);
   }
 }
