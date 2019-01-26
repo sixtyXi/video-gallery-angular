@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 
 import { CourseListComponent } from './course-list.component';
-import { COURSES } from '../../services/mock-courses';
+import { COURSES } from '../mock-courses';
 import { OrderByPipe } from './order-by.pipe';
 
 @Component({ selector: 'app-course-item', template: '<div class="course-item-stub"></div>' })

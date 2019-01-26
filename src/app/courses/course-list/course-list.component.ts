@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VideoRecord } from 'src/app/shared/VideoRecord';
-import { CoursesService } from '../../services/courses.service';
+import { CoursesService } from '../courses.service';
 
 @Component({
   selector: 'app-course-list',
