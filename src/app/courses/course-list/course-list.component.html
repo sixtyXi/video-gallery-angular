@@ -1,9 +1,9 @@
-<app-control-panel (onSearch)="filterByTitle($event)"></app-control-panel>
+<app-control-panel (onSearch)="filterBy($event)"></app-control-panel>
 
-<div *ngIf='courses.length; then courseList else noData'></div>
+<div *ngIf="(courses | filterByTitle : filter).length; then courseList else noData"></div>
 
 <ng-template #courseList>
-  <app-course-item *ngFor="let item of courses | orderBy: 'creationDate'" 
+  <app-course-item *ngFor="let item of ( courses | filterByTitle : filter | orderBy : 'creationDate')" 
     [item]="item"
     (onDelete)="deleteById($event)">
   </app-course-item>
