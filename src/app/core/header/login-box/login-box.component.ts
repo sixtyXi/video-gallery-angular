@@ -4,14 +4,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-login-box',
   templateUrl: './login-box.component.html',
-  styleUrls: ['./login-box.component.less']
+  styleUrls: [ './login-box.component.less' ]
 })
 export class LoginBoxComponent implements OnInit {
+  constructor(public authService: AuthService) {}
 
-  constructor(private authService: AuthService) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   logOff() {
     this.authService.logOut();

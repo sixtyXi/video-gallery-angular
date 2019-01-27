@@ -9,7 +9,7 @@ import { CoursesService } from '../services/courses.service';
 })
 export class CourseListComponent implements OnInit {
   public courses: VideoRecord[] = [];
-  private filter: string = '';
+  public filter: string = '';
 
   constructor(private coursesService: CoursesService) {}
 
