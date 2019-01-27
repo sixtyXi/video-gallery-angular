@@ -4,6 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { CourseListComponent } from './course-list.component';
 import { COURSES } from '../../shared/mocks/mock-courses';
 import { OrderByPipe } from './order-by.pipe';
+import { FilterByTitlePipe } from './filter-by-title.pipe';
 
 @Component({ selector: 'app-course-item', template: '<div class="course-item-stub"></div>' })
 class CourseItemStubComponent {}
@@ -15,7 +16,12 @@ describe('CourseListComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        declarations: [ CourseListComponent, CourseItemStubComponent, OrderByPipe ],
+        declarations: [
+          CourseListComponent,
+          CourseItemStubComponent,
+          OrderByPipe,
+          FilterByTitlePipe
+        ],
         schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
       }).compileComponents();
     })

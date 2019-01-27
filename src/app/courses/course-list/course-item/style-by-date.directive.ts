@@ -5,10 +5,10 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 })
 export class StyleByDateDirective implements OnInit {
   @Input('appStyleByDate') creationDate: Date;
-  
+
   private freshColor: string = 'green';
   private upcomingColor: string = 'blue';
-  
+
   constructor(private el: ElementRef) {}
 
   ngOnInit() {

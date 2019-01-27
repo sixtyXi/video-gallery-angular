@@ -2,7 +2,7 @@ import { FormatDurationPipe } from './format-duration.pipe';
 
 describe('FormatDurationPipe', () => {
   let pipe;
-  
+
   beforeEach(() => {
     pipe = new FormatDurationPipe();
   });
@@ -11,10 +11,10 @@ describe('FormatDurationPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should format minutes'), () => {
+  it('should format minutes', () => {
     const minutes = 88;
     const expectedFormattedMinutes = '1h 28min';
-    
+
     expect(pipe.transform(minutes)).toBe(expectedFormattedMinutes);
-  }
+  });
 });
