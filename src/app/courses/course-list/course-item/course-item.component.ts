@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { VideoCourse } from '../../../shared/VideoCourse.model';
+import { VideoCourse } from '../../../shared/models/VideoCourse.model';
 
 @Component({
   selector: 'app-course-item',

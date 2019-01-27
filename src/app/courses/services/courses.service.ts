@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { VideoRecord } from '../shared/VideoRecord';
-import { COURSES } from './mock-courses';
+import { VideoRecord } from '../../shared/models/VideoRecord.interface';
+import { COURSES } from '../../shared/mocks/mock-courses';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +20,12 @@ export class CoursesService {
   }
 
   getCourseById(id: number): VideoRecord {
-    return this.courses.find(course => course.id === id);
+    return this.courses.find((course) => course.id === id);
   }
 
   updateCourse(course: VideoRecord): void {
     for (let i = 0; i < this.courses.length; i++) {
-      if(course.id === this.courses[i].id) {
+      if (course.id === this.courses[i].id) {
         this.courses[i] = course;
         return;
       }
@@ -34,7 +34,7 @@ export class CoursesService {
 
   deleteCourseById(id: number): void {
     for (let i = 0; i < this.courses.length; i++) {
-      if(id === this.courses[i].id) {
+      if (id === this.courses[i].id) {
         this.courses.splice(i, 1);
         return;
       }

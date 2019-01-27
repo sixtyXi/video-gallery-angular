@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import { CourseItemComponent } from './course-item.component';
-import { VideoCourse } from 'src/app/shared/VideoCourse.model';
+import { VideoCourse } from 'src/app/shared/models/VideoCourse.model';
 import { StyleByDateDirective } from './style-by-date.directive';
-import { FormatDurationPipe } from './format-duration.pipe';
+import { FormatDurationPipe } from '../../../shared/pipes/format-duration.pipe';
 
 const mockItem: VideoCourse = {
   id: 1,
@@ -66,7 +66,7 @@ describe('CourseItemComponentStandAloneTest', () => {
   });
 
   it('should display formatted duration in course-item__duration', () => {
-    const expectedValue = '1h 28min';;
+    const expectedValue = '1h 28min';
     const el: HTMLElement = hostElement.querySelector('.course-item__duration');
 
     expect(el.textContent).toBe(expectedValue);
@@ -107,12 +107,17 @@ describe('CourseItemComponentTestHostApproach', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent, TestHostComponent, StyleByDateDirective, FormatDurationPipe ]
+      declarations: [
+        CourseItemComponent,
+        TestHostComponent,
+        StyleByDateDirective,
+        FormatDurationPipe
+      ]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestHostComponent);;
+    fixture = TestBed.createComponent(TestHostComponent);
     testHostComp = fixture.componentInstance;
     hostElement = fixture.nativeElement;
     component.item = mockItem;

@@ -1,4 +1,4 @@
-import { Person } from './Person';
+import { Person } from './Person.interface';
 
 export class User implements Person {
   constructor(

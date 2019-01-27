@@ -1,4 +1,4 @@
-import { VideoRecord } from "./VideoRecord";
+import { VideoRecord } from "./VideoRecord.interface";
 
 export class VideoCourse implements VideoRecord {
   constructor(
