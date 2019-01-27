@@ -1,4 +1,4 @@
 <div class="form-field date-field">
   <label for="date">Date:</label>
-  <input class="date-field__input" type="date" id="date" required>
+  <input [ngModel]="dateValue | date: 'yyyy-MM-dd'" class="date-field__input" type="date" id="date" required>
 </div>

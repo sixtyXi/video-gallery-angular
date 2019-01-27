@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
-import { NgForm } from '@angular/forms';
 
 const COURSE: VideoRecord = {
   id: 999,

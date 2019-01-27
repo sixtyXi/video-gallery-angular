@@ -7,7 +7,7 @@
     <label for="desc">Description:</label>
     <textarea value={{course.description}} name="description" class="course-form__textarea" id="desc" cols="30" rows="10" required></textarea>
   </div>
-  <app-date-field></app-date-field>
+  <app-date-field [dateValue]="course.creationDate"></app-date-field>
   <app-duration-field [duration]="course.duration"></app-duration-field>
   <button class="course-form__btn" type="submit">Save</button>
   <button (click)="onCancel()" class="course-form__btn" type="button">Cancel</button>
