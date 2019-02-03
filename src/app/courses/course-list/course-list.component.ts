@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { VideoRecord } from 'src/app/shared/VideoRecord';
-import { CoursesService } from '../courses.service';
+import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
   selector: 'app-course-list',
@@ -9,7 +9,7 @@ import { CoursesService } from '../courses.service';
 })
 export class CourseListComponent implements OnInit {
   public courses: VideoRecord[] = [];
-  private filter: string = '';
+  public filter: string = '';
 
   constructor(private coursesService: CoursesService) {}
 

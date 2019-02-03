@@ -1,0 +1,14 @@
+<form (ngSubmit)="onSubmit()" ngNativeValidate class="course-form">
+  <div class="form-field">
+    <label class="course-form__label" for="title">Title:</label>
+    <input value={{course.title}} name="title" class="course-form__input" type="text" id="title" required>
+  </div>
+  <div class="form-field">
+    <label for="desc">Description:</label>
+    <textarea value={{course.description}} name="description" class="course-form__textarea" id="desc" cols="30" rows="10" required></textarea>
+  </div>
+  <app-date-field [dateValue]="course.creationDate"></app-date-field>
+  <app-duration-field [duration]="course.duration"></app-duration-field>
+  <button class="course-form__btn" type="submit">Save</button>
+  <button (click)="onCancel()" class="course-form__btn" type="button">Cancel</button>
+</form>
