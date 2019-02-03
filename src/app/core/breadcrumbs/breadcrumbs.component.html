@@ -2,8 +2,9 @@
   <div class="content-wrapper">
     <ul class="breadcrumbs__content">
       <li class="breadcrumbs__item">
-        <h1 class="page-title">Courses</h1>
+        <h1 [routerLink]="['/courses']" class="page-title">Courses</h1>
       </li>
+      <li *ngIf="course" class="breadcrumbs__item">&nbsp;/&nbsp;{{course.title | titlecase}}</li>
     </ul>
   </div>
 </nav>
