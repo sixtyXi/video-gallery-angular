@@ -1,15 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
-
-const COURSE: VideoRecord = {
-  id: 999,
-  title: 'video course 999',
-  creationDate: new Date(2018, 5, 15),
-  duration: 100,
-  description:
-    'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium soluta libero similique aperiam, velit inventore tempora sequi repudiandae sunt nesciunt!',
-  topRated: false
-};
+import { Router, ActivatedRoute } from '@angular/router';
+import { CoursesService } from 'src/app/courses/services/courses.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-course-page',
@@ -18,18 +11,61 @@ const COURSE: VideoRecord = {
 })
 export class CoursePageComponent implements OnInit {
   public course: VideoRecord;
+  public form: FormGroup;
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private coursesService: CoursesService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      title: [ '', Validators.required ],
+      description: [ '', Validators.required ],
+      creationDate: [ '', Validators.required ],
+      duration: [ '', Validators.required ]
+    });
+  }
 
   ngOnInit() {
-    this.course = COURSE;
+    this.route.params.subscribe((data) => {
+      data.id && (this.course = this.coursesService.getCourseById(+data.id));
+      if (this.course) {
+        const controlValues = this.mapToControls(this.course);
+        this.form.setValue(controlValues);
+      }
+    });
   }
 
   onSubmit() {
-    console.log('form is submitted');
+    const controlValues: Partial<VideoRecord> = this.mapToModel(this.form.value);
+
+    if (this.course) {
+      const updatedCourse: VideoRecord = { ...this.course, ...controlValues };
+      this.coursesService.updateCourse(updatedCourse);
+    } else {
+      const newCourse: Partial<VideoRecord> = { ...controlValues, topRated: false };
+      this.course = this.coursesService.addCourse(newCourse);
+    }
+
+    this.router.navigate([ 'courses' ]);
   }
 
   onCancel() {
-    console.log('cancel is clicked');
+    this.router.navigate([ 'courses' ]);
+  }
+
+  mapToControls(course: VideoRecord): object {
+    let { id, topRated, creationDate, ...controls } = course;
+
+    controls['creationDate'] = creationDate.toISOString().substring(0, 10);
+    return controls;
+  }
+
+  mapToModel(controlValues): Partial<VideoRecord> {
+    const { creationDate, ...values } = controlValues;
+
+    values['creationDate'] = new Date(creationDate);
+    return values;
   }
 }

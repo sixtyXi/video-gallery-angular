@@ -1,4 +1,4 @@
-<div class="form-field date-field">
+<div [formGroup]="parentForm" class="form-field date-field">
   <label for="date">Date:</label>
-  <input [ngModel]="dateValue | date: 'yyyy-MM-dd'" class="date-field__input" type="date" id="date" required>
+  <input formControlName="creationDate" [value]="parentForm.get('creationDate').value | date: 'yyyy-MM-dd'" class="date-field__input" type="date" id="date" required>
 </div>

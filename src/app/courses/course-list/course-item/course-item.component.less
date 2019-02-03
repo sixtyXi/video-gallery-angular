@@ -3,13 +3,15 @@
   height: 80px;
   margin-bottom: 5px;
   padding: 5px;
-  overflow: hidden;
   border: 2px solid;
   border-radius: 5px;
   font-size: 14px;
   line-height: 20px;
 
   &__content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     padding-right: 25px;
   }
 
@@ -32,10 +34,15 @@
     padding: 0 25px;
   }
 
+  &__desc {
+    overflow: hidden;
+  }
+
   &__controls {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-left: auto;
   }
 
   &__btn {

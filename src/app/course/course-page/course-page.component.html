@@ -1,14 +1,14 @@
-<form (ngSubmit)="onSubmit()" ngNativeValidate class="course-form">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="course-form">
   <div class="form-field">
     <label class="course-form__label" for="title">Title:</label>
-    <input value={{course.title}} name="title" class="course-form__input" type="text" id="title" required>
+    <input formControlName="title" class="course-form__input" type="text" id="title">
   </div>
   <div class="form-field">
     <label for="desc">Description:</label>
-    <textarea value={{course.description}} name="description" class="course-form__textarea" id="desc" cols="30" rows="10" required></textarea>
+    <textarea formControlName="description" class="course-form__textarea" id="desc" cols="30" rows="10"></textarea>
   </div>
-  <app-date-field [dateValue]="course.creationDate"></app-date-field>
-  <app-duration-field [duration]="course.duration"></app-duration-field>
-  <button class="course-form__btn" type="submit">Save</button>
+  <app-date-field [parentForm]="form"></app-date-field>
+  <app-duration-field [parentForm]="form"></app-duration-field>
+  <button class="course-form__btn" type="submit" [disabled]="!form.valid">Save</button>
   <button (click)="onCancel()" class="course-form__btn" type="button">Cancel</button>
 </form>

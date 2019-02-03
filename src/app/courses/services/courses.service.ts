@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { VideoRecord } from '../../shared/models/VideoRecord.interface';
 import { COURSES } from '../../shared/mocks/mock-courses';
+import { VideoCourse } from 'src/app/shared/models/VideoCourse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,13 @@ export class CoursesService {
     return this.courses;
   }
 
-  addCourse(course: VideoRecord): void {
-    this.courses.push(course);
+  addCourse(course: Partial<VideoRecord>): VideoRecord {
+    const { title, creationDate, duration, description, topRated } = course;
+    const id = this.courses.length + 1;
+    const newCourse = new VideoCourse(id, title, creationDate, duration, description, topRated);
+
+    this.courses.push(newCourse);
+    return newCourse;
   }
 
   getCourseById(id: number): VideoRecord {

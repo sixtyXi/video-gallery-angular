@@ -2,4 +2,4 @@
   <input [(ngModel)]="txtToSearch" class="search-control__input" type="text" placeholder="Text to search">
   <button (click)="search()" class="search-control__btn" type="button">Search</button>
 </div>
-<button class="add-control-btn" type="button">Add course</button>
+<button [routerLink]="['/courses/new']" routerLinkActive="router-link-active"  class="add-control-btn" type="button">Add course</button>

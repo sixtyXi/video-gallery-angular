@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-date-field',
@@ -6,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: [ './date-field.component.less' ]
 })
 export class DateFieldComponent implements OnInit {
-  @Input() dateValue: Date;
+  @Input() parentForm: FormGroup;
 
   constructor() {}
 

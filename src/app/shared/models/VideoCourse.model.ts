@@ -1,4 +1,4 @@
-import { VideoRecord } from "./VideoRecord.interface";
+import { VideoRecord } from './VideoRecord.interface';
 
 export class VideoCourse implements VideoRecord {
   constructor(
@@ -8,5 +8,5 @@ export class VideoCourse implements VideoRecord {
     public duration: number,
     public description: string,
     public topRated: boolean
-  ) { }
+  ) {}
 }
