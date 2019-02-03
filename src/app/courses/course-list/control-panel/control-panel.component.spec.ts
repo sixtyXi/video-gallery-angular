@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ControlPanelComponent } from './control-panel.component';
 
@@ -12,7 +13,7 @@ describe('ControlPanelComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         declarations: [ ControlPanelComponent ],
-        imports: [ FormsModule ]
+        imports: [ FormsModule, RouterTestingModule ]
       }).compileComponents();
     })
   );

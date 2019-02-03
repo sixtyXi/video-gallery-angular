@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { CourseItemComponent } from './course-item.component';
 import { VideoCourse } from 'src/app/shared/models/VideoCourse.model';
@@ -35,7 +36,8 @@ describe('CourseItemComponentStandAloneTest', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ CourseItemComponent, StyleByDateDirective, FormatDurationPipe ]
+      declarations: [ CourseItemComponent, StyleByDateDirective, FormatDurationPipe ],
+      imports: [ RouterTestingModule ]
     }).compileComponents();
   });
 
@@ -112,7 +114,8 @@ describe('CourseItemComponentTestHostApproach', () => {
         TestHostComponent,
         StyleByDateDirective,
         FormatDurationPipe
-      ]
+      ],
+      imports: [ RouterTestingModule ]
     }).compileComponents();
   });
 
