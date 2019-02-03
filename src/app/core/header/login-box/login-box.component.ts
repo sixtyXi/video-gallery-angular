@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-box',
@@ -7,12 +8,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: [ './login-box.component.less' ]
 })
 export class LoginBoxComponent implements OnInit {
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
   logOff() {
     this.authService.logOut();
-    console.log('user logged out');
+    this.router.navigate([ 'login' ]);
   }
 }
