@@ -4,11 +4,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private isLoggedIn: boolean = false;
-  constructor() {}
+  private isLoggedIn: boolean;
+
+  constructor() {
+    this.isLoggedIn = !!(localStorage.getItem('login') && localStorage.getItem('pwd'));
+  }
 
   logIn(login: string, pwd: string) {
-    localStorage.setItem('login', name);
+    localStorage.setItem('login', login);
     localStorage.setItem('pwd', pwd);
     this.isLoggedIn = true;
   }

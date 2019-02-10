@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-duration-field',
@@ -6,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: [ './duration-field.component.less' ]
 })
 export class DurationFieldComponent implements OnInit {
-  @Input() duration: number;
+  @Input() parentForm: FormGroup;
 
   constructor() {}
 

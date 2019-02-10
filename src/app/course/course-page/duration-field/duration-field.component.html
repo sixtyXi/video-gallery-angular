@@ -1,5 +1,5 @@
-<div class="form-field duration-field">
-    <label class="duration-field__label" for="duration">Duration:</label>
-    <input value="{{duration}}" name="duration" class="duration-field__input" type="number" id="duration" min="1" pattern="[0-9]" required>
-    <span class="duration-field__formatted-value">{{duration | formatDuration}}</span>
-  </div>
+<div [formGroup]="parentForm" class="form-field duration-field">
+  <label class="duration-field__label" for="duration">Duration:</label>
+  <input formControlName="duration" name="duration" class="duration-field__input" type="number" id="duration" min="1">
+  <span class="duration-field__formatted-value">{{parentForm.get('duration').value | formatDuration}}</span>
+</div>

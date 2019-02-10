@@ -7,16 +7,17 @@ import { CoreModule } from './core/core.module';
 import { CoursesModule } from './courses/courses.module';
 import { LoginModule } from './login/login.module';
 import { CourseModule } from './course/course.module';
+import { PageNotFoundComponent } from './pageNotFound/page-not-found/page-not-found.component';
 
 @NgModule({
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent, PageNotFoundComponent ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     CoreModule,
     CoursesModule,
     LoginModule,
-    CourseModule
+    CourseModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

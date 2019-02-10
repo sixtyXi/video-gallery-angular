@@ -7,6 +7,7 @@ import { StyleByDateDirective } from './course-list/course-item/style-by-date.di
 import { OrderByPipe } from './course-list/order-by.pipe';
 import { FilterByTitlePipe } from './course-list/filter-by-title.pipe';
 import { SharedModule } from '../shared/shared.module';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { SharedModule } from '../shared/shared.module';
     OrderByPipe,
     FilterByTitlePipe
   ],
-  imports: [ SharedModule ],
+  imports: [ SharedModule, AppRoutingModule ],
   exports: [ CoursesPageComponent ]
 })
 export class CoursesModule {}
