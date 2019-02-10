@@ -5,7 +5,6 @@ import { CoursesPageComponent } from './courses-page/courses-page.component';
 import { CourseItemComponent } from './course-list/course-item/course-item.component';
 import { StyleByDateDirective } from './course-list/course-item/style-by-date.directive';
 import { OrderByPipe } from './course-list/order-by.pipe';
-import { FilterByTitlePipe } from './course-list/filter-by-title.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 
@@ -16,8 +15,7 @@ import { AppRoutingModule } from '../app-routing.module';
     CoursesPageComponent,
     CourseItemComponent,
     StyleByDateDirective,
-    OrderByPipe,
-    FilterByTitlePipe
+    OrderByPipe
   ],
   imports: [ SharedModule, AppRoutingModule ],
   exports: [ CoursesPageComponent ]

@@ -1,49 +1,87 @@
 import { Injectable } from '@angular/core';
 import { VideoRecord } from '../../shared/models/VideoRecord.interface';
-import { COURSES } from '../../shared/mocks/mock-courses';
 import { VideoCourse } from 'src/app/shared/models/VideoCourse.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { VideoCourseBackend } from './VideoCourseBackend.interface';
+
+const BASE_URL = 'http://localhost:3004/courses';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
   public courses: VideoRecord[] = [];
-  constructor() {
-    this.courses = COURSES;
+
+  constructor(private http: HttpClient) {}
+
+  getList(start: string, count: string, textFragment: string): Observable<VideoRecord[]> {
+    return this.http
+      .get(BASE_URL, { params: { start, count, textFragment } })
+      .pipe(
+        map((response: VideoCourseBackend[]) => response.map(this.mapToCourse)),
+        catchError(this.handleError)
+      );
   }
 
-  getList(): VideoRecord[] {
-    return this.courses;
+  addCourse(course: Partial<VideoRecord>): Observable<VideoCourse> {
+    const newCourse = this.mapToCourseBE(course);
+
+    return this.http
+      .post(`${BASE_URL}`, newCourse)
+      .pipe(map(this.mapToCourse), catchError(this.handleError));
   }
 
-  addCourse(course: Partial<VideoRecord>): VideoRecord {
-    const { title, creationDate, duration, description, topRated } = course;
-    const id = this.courses.length + 1;
-    const newCourse = new VideoCourse(id, title, creationDate, duration, description, topRated);
-
-    this.courses.push(newCourse);
-    return newCourse;
+  getCourseById(id: string): Observable<VideoRecord> {
+    return this.http
+      .get(`${BASE_URL}/${id}`)
+      .pipe(
+        map((response: VideoCourseBackend) => this.mapToCourse(response)),
+        catchError(this.handleError)
+      );
   }
 
-  getCourseById(id: number): VideoRecord {
-    return this.courses.find((course) => course.id === id);
+  updateCourse(course: VideoRecord): Observable<VideoCourse> {
+    const updatedCourse = this.mapToCourseBE(course);
+
+    return this.http
+      .patch(`${BASE_URL}/${updatedCourse.id}`, updatedCourse)
+      .pipe(map(this.mapToCourse), catchError(this.handleError));
   }
 
-  updateCourse(course: VideoRecord): void {
-    for (let i = 0; i < this.courses.length; i++) {
-      if (course.id === this.courses[i].id) {
-        this.courses[i] = course;
-        return;
-      }
+  deleteCourseById(id: string) {
+    return this.http.delete(`${BASE_URL}/${id}`).pipe(catchError(this.handleError));
+  }
+
+  private mapToCourse(item: VideoCourseBackend) {
+    return new VideoCourse(
+      item.id,
+      item.name,
+      new Date(item.date),
+      item.length,
+      item.description,
+      item.isTopRated
+    );
+  }
+
+  private mapToCourseBE(item: Partial<VideoRecord>): VideoCourseBackend {
+    return {
+      id: item.id,
+      name: item.title,
+      date: item.creationDate.toISOString(),
+      length: item.duration,
+      description: item.description,
+      isTopRated: item.topRated
+    };
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
     }
-  }
-
-  deleteCourseById(id: number): void {
-    for (let i = 0; i < this.courses.length; i++) {
-      if (id === this.courses[i].id) {
-        this.courses.splice(i, 1);
-        return;
-      }
-    }
+    return throwError('Something bad happened; please try again later.');
   }
 }
