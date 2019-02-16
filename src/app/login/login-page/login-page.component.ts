@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-page',
@@ -13,7 +14,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   public login: string = '';
   public pwd: string = '';
 
-  private onLoginSubscription: Subscription;
+  private ngUnsubscribe = new Subject();
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -21,7 +22,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   onLogin() {
     if (this.login && this.pwd) {
-      this.authService.logIn(this.login, this.pwd).subscribe(
+      this.authService.logIn(this.login, this.pwd).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
         () => {
           this.router.navigate([ '/' ]);
         },
@@ -31,6 +32,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.onLoginSubscription && this.onLoginSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -33,7 +33,7 @@ export class CoursesService {
       .pipe(map(this.mapToCourse), catchError(this.handleError));
   }
 
-  getCourseById(id: string): Observable<VideoRecord> {
+  getCourseById(id: string | number): Observable<VideoRecord> {
     return this.http
       .get(`${BASE_URL}/${id}`)
       .pipe(
@@ -50,7 +50,7 @@ export class CoursesService {
       .pipe(map(this.mapToCourse), catchError(this.handleError));
   }
 
-  deleteCourseById(id: string) {
+  deleteCourseById(id: string | number) {
     return this.http.delete(`${BASE_URL}/${id}`).pipe(catchError(this.handleError));
   }
 

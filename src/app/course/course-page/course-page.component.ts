@@ -3,7 +3,8 @@ import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoursesService } from 'src/app/courses/services/courses.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-page',
@@ -13,10 +14,7 @@ import { Subscription } from 'rxjs';
 export class CoursePageComponent implements OnInit, OnDestroy {
   public course: VideoRecord;
   public form: FormGroup;
-
-  private courseGetSubscription: Subscription;
-  private courseAddSubscription: Subscription;
-  private courseUpdateSubscription: Subscription;
+  private ngUnsubscribe = new Subject();
 
   constructor(
     private router: Router,
@@ -35,8 +33,9 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe((data) => {
       if (data.id) {
-        this.courseGetSubscription = this.coursesService
-          .getCourseById(`${data.id}`)
+        this.coursesService
+          .getCourseById(data.id)
+          .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((res: VideoRecord) => {
             this.course = res;
             this.fillForm(this.course);
@@ -51,16 +50,18 @@ export class CoursePageComponent implements OnInit, OnDestroy {
     if (this.course) {
       const updatedCourse: VideoRecord = { ...this.course, ...controlValues };
 
-      this.courseUpdateSubscription = this.coursesService
+      this.coursesService
         .updateCourse(updatedCourse)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((res: VideoRecord) => {
           this.course = res;
         });
     } else {
       const newCourse: Partial<VideoRecord> = { ...controlValues, topRated: false };
 
-      this.courseAddSubscription = this.coursesService
+      this.coursesService
         .addCourse(newCourse)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((res: VideoRecord) => {
           this.course = res;
         });
@@ -94,8 +95,7 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.courseGetSubscription && this.courseGetSubscription.unsubscribe();
-    this.courseAddSubscription && this.courseAddSubscription.unsubscribe();
-    this.courseUpdateSubscription && this.courseUpdateSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

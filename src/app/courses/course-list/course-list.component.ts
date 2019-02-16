@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
 import { CoursesService } from '../services/courses.service';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
 
 const LOAD_TO_COUNT = 5;
 
@@ -15,9 +16,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
   public filter: string = '';
   private pageNumber: number;
   private coursePerPage = LOAD_TO_COUNT;
-
-  private coursesSubscription: Subscription;
-  private courseDeleteSubscribtion: Subscription;
+  private ngUnsubscribe = new Subject();
 
   constructor(private coursesService: CoursesService) {}
 
@@ -31,8 +30,9 @@ export class CourseListComponent implements OnInit, OnDestroy {
   }
 
   getList(start: string, count: string, textFragment: string): void {
-    this.coursesSubscription = this.coursesService
+    this.coursesService
       .getList(start, count, textFragment)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: VideoRecord[]) => (this.courses = res));
   }
 
@@ -45,8 +45,9 @@ export class CourseListComponent implements OnInit, OnDestroy {
 
   deleteById(id: number): void {
     if (confirm('Do you really want to delete this course?')) {
-      this.courseDeleteSubscribtion = this.coursesService
-        .deleteCourseById(`${id}`)
+      this.coursesService
+        .deleteCourseById(id)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => this.init());
     }
   }
@@ -57,7 +58,7 @@ export class CourseListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.coursesSubscription && this.coursesSubscription.unsubscribe();
-    this.courseDeleteSubscribtion && this.courseDeleteSubscribtion.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
