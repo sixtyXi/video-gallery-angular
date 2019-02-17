@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoursesService } from 'src/app/courses/services/courses.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: [ './course-page.component.less' ]
 })
-export class CoursePageComponent implements OnInit {
+export class CoursePageComponent implements OnInit, OnDestroy {
   public course: VideoRecord;
   public form: FormGroup;
+  private ngUnsubscribe = new Subject();
 
   constructor(
     private router: Router,
@@ -29,10 +32,14 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((data) => {
-      data.id && (this.course = this.coursesService.getCourseById(+data.id));
-      if (this.course) {
-        const controlValues = this.mapToControls(this.course);
-        this.form.setValue(controlValues);
+      if (data.id) {
+        this.coursesService
+          .getCourseById(data.id)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((res: VideoRecord) => {
+            this.course = res;
+            this.fillForm(this.course);
+          });
       }
     });
   }
@@ -42,10 +49,22 @@ export class CoursePageComponent implements OnInit {
 
     if (this.course) {
       const updatedCourse: VideoRecord = { ...this.course, ...controlValues };
-      this.coursesService.updateCourse(updatedCourse);
+
+      this.coursesService
+        .updateCourse(updatedCourse)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res: VideoRecord) => {
+          this.course = res;
+        });
     } else {
       const newCourse: Partial<VideoRecord> = { ...controlValues, topRated: false };
-      this.course = this.coursesService.addCourse(newCourse);
+
+      this.coursesService
+        .addCourse(newCourse)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((res: VideoRecord) => {
+          this.course = res;
+        });
     }
 
     this.router.navigate([ 'courses' ]);
@@ -53,6 +72,12 @@ export class CoursePageComponent implements OnInit {
 
   onCancel() {
     this.router.navigate([ 'courses' ]);
+  }
+
+  private fillForm(course: VideoRecord) {
+    const controlValues = this.mapToControls(course);
+
+    this.form.setValue(controlValues);
   }
 
   mapToControls(course: VideoRecord): object {
@@ -67,5 +92,10 @@ export class CoursePageComponent implements OnInit {
 
     values['creationDate'] = new Date(creationDate);
     return values;
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

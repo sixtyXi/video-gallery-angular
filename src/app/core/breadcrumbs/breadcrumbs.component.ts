@@ -1,34 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { Router, RoutesRecognized } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { CoursesService } from 'src/app/courses/services/courses.service';
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
+import { Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: [ './breadcrumbs.component.less' ]
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
   public course: VideoRecord = null;
+
+  private ngUnsubscribe = new Subject();
 
   constructor(
     public authService: AuthService,
     private coursesService: CoursesService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.router.events.subscribe((data) => {
-      if (data instanceof RoutesRecognized) {
-        const id = data.state.root.firstChild.params.id;
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => this.activatedRoute),
+        map((route) => route.firstChild),
+        map((route) => ({ params: route.params, data: route.data }))
+      )
+      .subscribe((route) => {
+        route.params.subscribe((params) => {
+          if (params.id) {
+            this.coursesService
+              .getCourseById(params.id)
+              .pipe(takeUntil(this.ngUnsubscribe))
+              .subscribe((res: VideoRecord) => {
+                this.course = res;
+              });
+          } else {
+            this.course = null;
+          }
+        });
+        //Do something with data
+        // route.data.subscribe((data) => {
+        // });
+      });
+  }
 
-        if (id) {
-          this.course = this.coursesService.getCourseById(+id);
-        } else {
-          this.course = null;
-        }
-      }
-    });
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { UUID } from 'angular2-uuid';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
+const BASE_URL = 'http://localhost:3004/users';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private isLoggedIn: boolean;
 
-  constructor() {
-    this.isLoggedIn = !!(localStorage.getItem('login') && localStorage.getItem('pwd'));
+  constructor(private http: HttpClient) {
+    this.isLoggedIn = !!localStorage.getItem('fakeToken');
   }
 
-  logIn(login: string, pwd: string) {
-    localStorage.setItem('login', login);
-    localStorage.setItem('pwd', pwd);
-    this.isLoggedIn = true;
+  logIn(login: string, password: string) {
+    const fakeToken = UUID.UUID();
+
+    return this.http.post(`${BASE_URL}`, { login, password, fakeToken }).pipe(
+      tap((_) => {
+        localStorage.setItem('fakeToken', fakeToken);
+        this.isLoggedIn = true;
+      }),
+      catchError(this.handleError)
+    );
   }
 
   logOut() {
-    localStorage.removeItem('login');
-    localStorage.removeItem('pwd');
+    localStorage.removeItem('fakeToken');
     this.isLoggedIn = false;
   }
 
@@ -26,7 +36,16 @@ export class AuthService {
     return this.isLoggedIn;
   }
 
-  getUserInfo(): string {
-    return localStorage.getItem('login') || '';
+  getUserInfo(id: string) {
+    return this.http.get(`${BASE_URL}/${id}`);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+    }
+    return throwError('Something bad happened; please try again later.');
   }
 }
