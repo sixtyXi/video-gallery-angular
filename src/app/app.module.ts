@@ -10,6 +10,7 @@ import { LoginModule } from './login/login.module';
 import { CourseModule } from './course/course.module';
 import { PageNotFoundComponent } from './pageNotFound/page-not-found/page-not-found.component';
 import { AuthInterceptor } from './auth-interceptor';
+import { GlobalLoaderModule } from './globalLoader/globalLoader.module';
 
 @NgModule({
   declarations: [ AppComponent, PageNotFoundComponent ],
@@ -20,6 +21,7 @@ import { AuthInterceptor } from './auth-interceptor';
     CoursesModule,
     LoginModule,
     CourseModule,
+    GlobalLoaderModule,
     AppRoutingModule
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],

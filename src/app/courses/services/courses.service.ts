@@ -3,8 +3,9 @@ import { VideoRecord } from '../../shared/models/VideoRecord.interface';
 import { VideoCourse } from 'src/app/shared/models/VideoCourse.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import { VideoCourseBackend } from './VideoCourseBackend.interface';
+import { GlobalLoaderService } from 'src/app/globalLoader/global-loader.service';
 
 const BASE_URL = 'http://localhost:3004/courses';
 
@@ -14,44 +15,65 @@ const BASE_URL = 'http://localhost:3004/courses';
 export class CoursesService {
   public courses: VideoRecord[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private globalLoaderService: GlobalLoaderService) {}
 
   getList(start: string, count: string, textFragment: string): Observable<VideoRecord[]> {
+    this.globalLoaderService.runLoading();
+
     return this.http
       .get(BASE_URL, { params: { start, count, textFragment } })
       .pipe(
+        tap(() => this.globalLoaderService.stopLoading()),
         map((response: VideoCourseBackend[]) => response.map(this.mapToCourse)),
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
   addCourse(course: Partial<VideoRecord>): Observable<VideoCourse> {
     const newCourse = this.mapToCourseBE(course);
 
+    this.globalLoaderService.runLoading();
     return this.http
       .post(`${BASE_URL}`, newCourse)
-      .pipe(map(this.mapToCourse), catchError(this.handleError));
+      .pipe(
+        tap(() => this.globalLoaderService.stopLoading()),
+        map(this.mapToCourse),
+        catchError((err) => this.handleError(err))
+      );
   }
 
   getCourseById(id: string | number): Observable<VideoRecord> {
+    this.globalLoaderService.runLoading();
     return this.http
       .get(`${BASE_URL}/${id}`)
       .pipe(
+        tap(() => this.globalLoaderService.stopLoading()),
         map((response: VideoCourseBackend) => this.mapToCourse(response)),
-        catchError(this.handleError)
+        catchError((err) => this.handleError(err))
       );
   }
 
   updateCourse(course: VideoRecord): Observable<VideoCourse> {
     const updatedCourse = this.mapToCourseBE(course);
 
+    this.globalLoaderService.runLoading();
     return this.http
       .patch(`${BASE_URL}/${updatedCourse.id}`, updatedCourse)
-      .pipe(map(this.mapToCourse), catchError(this.handleError));
+      .pipe(
+        tap(() => this.globalLoaderService.stopLoading()),
+        map(this.mapToCourse),
+        catchError((err) => this.handleError(err))
+      );
   }
 
   deleteCourseById(id: string | number) {
-    return this.http.delete(`${BASE_URL}/${id}`).pipe(catchError(this.handleError));
+    this.globalLoaderService.runLoading();
+    return this.http
+      .delete(`${BASE_URL}/${id}`)
+      .pipe(
+        tap(() => this.globalLoaderService.stopLoading()),
+        catchError((err) => this.handleError(err))
+      );
   }
 
   private mapToCourse(item: VideoCourseBackend) {
@@ -77,6 +99,8 @@ export class CoursesService {
   }
 
   private handleError(error: HttpErrorResponse) {
+    this.globalLoaderService.stopLoading();
+
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
     } else {

@@ -6,7 +6,10 @@ import { CourseListComponent } from './course-list.component';
 import { COURSES } from '../../shared/mocks/mock-courses';
 import { OrderByPipe } from './order-by.pipe';
 
-@Component({ selector: 'app-course-item', template: '<div class="course-item-stub"></div>' })
+@Component({
+  selector: 'app-course-item',
+  template: '<div class="course-item-stub"></div>'
+})
 class CourseItemStubComponent {}
 
 describe('CourseListComponent', () => {
@@ -26,6 +29,7 @@ describe('CourseListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseListComponent);
     component = fixture.componentInstance;
+    component.courses = COURSES;
     fixture.detectChanges();
   });
 
