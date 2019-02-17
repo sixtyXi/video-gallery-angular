@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { filter, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-control-panel',
@@ -7,13 +9,19 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ControlPanelComponent implements OnInit {
   @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
-  public txtToSearch: string = '';
+  public searchField: FormControl;
 
-  constructor() {}
+  constructor() {
+    this.searchField = new FormControl();
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.searchField.valueChanges
+      .pipe(filter((txt) => txt.length > 3), debounceTime(500))
+      .subscribe((txt) => this.search(txt));
+  }
 
-  search(): void {
-    this.onSearch.emit(this.txtToSearch);
+  search(txt): void {
+    this.onSearch.emit(txt);
   }
 }
