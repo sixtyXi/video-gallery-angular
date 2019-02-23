@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ControlPanelComponent } from './control-panel.component';
@@ -13,7 +13,7 @@ describe('ControlPanelComponent', () => {
     async(() => {
       TestBed.configureTestingModule({
         declarations: [ ControlPanelComponent ],
-        imports: [ FormsModule, RouterTestingModule ]
+        imports: [ RouterTestingModule, ReactiveFormsModule ]
       }).compileComponents();
     })
   );
@@ -37,14 +37,6 @@ describe('ControlPanelComponent', () => {
     searchInput.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    expect(component.txtToSearch).toBe(inputValue);
-  });
-
-  it('should invoke #search on search button click', () => {
-    const searchBtn: HTMLButtonElement = hostElement.querySelector('.search-control__btn');
-
-    spyOn(component, 'search');
-    searchBtn.dispatchEvent(new Event('click'));
-    expect(component.search).toHaveBeenCalled();
+    expect(component.searchField.value).toBe(inputValue);
   });
 });

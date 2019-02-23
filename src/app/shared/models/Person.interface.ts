@@ -1,5 +1,10 @@
 export interface Person {
   id: number;
-  firstName: string;
-  lastName: string;
+  fakeToken: string;
+  login: string;
+  password: string;
+  name?: {
+    first: string;
+    last: string;
+  };
 }

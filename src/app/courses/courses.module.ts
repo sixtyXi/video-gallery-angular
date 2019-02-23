@@ -7,6 +7,7 @@ import { StyleByDateDirective } from './course-list/course-item/style-by-date.di
 import { OrderByPipe } from './course-list/order-by.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { AppRoutingModule } from '../app-routing.module';
     StyleByDateDirective,
     OrderByPipe
   ],
-  imports: [ SharedModule, AppRoutingModule ],
+  imports: [ SharedModule, AppRoutingModule, ReactiveFormsModule ],
   exports: [ CoursesPageComponent ]
 })
 export class CoursesModule {}
