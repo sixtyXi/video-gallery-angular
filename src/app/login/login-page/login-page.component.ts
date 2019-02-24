@@ -1,38 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as Auth from 'src/app/core/actions/auth';
+import * as fromStore from '../../store/reducers/index';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: [ './login-page.component.less' ]
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent implements OnInit {
   public login: string = '';
   public pwd: string = '';
 
-  private ngUnsubscribe = new Subject();
-
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {}
 
   onLogin() {
     if (this.login && this.pwd) {
-      this.authService.logIn(this.login, this.pwd).pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-        () => {
-          this.router.navigate([ '/' ]);
-        },
-        (error: HttpErrorResponse) => console.log(error)
-      );
+      this.store.dispatch(new Auth.Login({ auth: { login: this.login, password: this.pwd } }));
     }
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

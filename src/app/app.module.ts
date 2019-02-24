@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,10 +14,10 @@ import { PageNotFoundComponent } from './pageNotFound/page-not-found/page-not-fo
 import { AuthInterceptor } from './auth-interceptor';
 import { GlobalLoaderModule } from './globalLoader/globalLoader.module';
 import { EffectsModule } from '@ngrx/effects';
-import { reducers, metaReducers } from './store/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AppEffects } from './store/effects/app.effects';
-
+import { AuthEffects } from './core/store/effects/auth.effects';
+import { reducers, metaReducers } from './store/reducers';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [ AppComponent, PageNotFoundComponent ],
   imports: [
@@ -29,7 +30,9 @@ import { AppEffects } from './store/effects/app.effects';
     GlobalLoaderModule,
     AppRoutingModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([ AppEffects, AppEffects ])
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+    EffectsModule.forRoot([ AuthEffects ])
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
   bootstrap: [ AppComponent ]
