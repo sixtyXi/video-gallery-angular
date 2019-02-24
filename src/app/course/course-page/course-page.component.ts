@@ -1,25 +1,28 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CoursesService } from 'src/app/courses/services/courses.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
+import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
+import * as fromStore from '../../store/reducers';
+import * as Courses from '../../courses/actions/courses.actions';
 
 @Component({
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: [ './course-page.component.less' ]
 })
-export class CoursePageComponent implements OnInit, OnDestroy {
-  public course: VideoRecord;
+export class CoursePageComponent implements OnInit {
+  public course$: Observable<VideoRecord>;
+  private courseId: string | number;
   public form: FormGroup;
-  private ngUnsubscribe = new Subject();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private coursesService: CoursesService,
+    private store: Store<fromStore.State>,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
@@ -31,43 +34,28 @@ export class CoursePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((data) => {
-      if (data.id) {
-        this.coursesService
-          .getCourseById(data.id)
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((res: VideoRecord) => {
-            this.course = res;
-            this.fillForm(this.course);
-          });
-      }
-    });
+    this.course$ = this.store.select(fromStore.getCourse).pipe(
+      tap((course) => {
+        if (course) {
+          this.fillForm(course);
+          this.courseId = course.id;
+        }
+      })
+    );
   }
 
   onSubmit() {
     const controlValues: Partial<VideoRecord> = this.mapToModel(this.form.value);
 
-    if (this.course) {
-      const updatedCourse: VideoRecord = { ...this.course, ...controlValues };
-
-      this.coursesService
-        .updateCourse(updatedCourse)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((res: VideoRecord) => {
-          this.course = res;
-        });
+    if (this.courseId) {
+      this.store.dispatch(
+        new Courses.CourseUpdateRequested({ courseId: this.courseId, course: { ...controlValues } })
+      );
     } else {
-      const newCourse: Partial<VideoRecord> = { ...controlValues, topRated: false };
+      const course: Partial<VideoRecord> = { ...controlValues, topRated: false };
 
-      this.coursesService
-        .addCourse(newCourse)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((res: VideoRecord) => {
-          this.course = res;
-        });
+      this.store.dispatch(new Courses.CourseAddRequested({ course }));
     }
-
-    this.router.navigate([ 'courses' ]);
   }
 
   onCancel() {
@@ -92,10 +80,5 @@ export class CoursePageComponent implements OnInit, OnDestroy {
 
     values['creationDate'] = new Date(creationDate);
     return values;
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

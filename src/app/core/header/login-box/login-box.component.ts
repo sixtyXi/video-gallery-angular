@@ -4,7 +4,6 @@ import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { Person } from 'src/app/shared/models/Person.interface';
 import * as Auth from '../../actions/auth';
 import * as fromStore from '../../../store/reducers';
 

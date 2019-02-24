@@ -17,11 +17,20 @@ export class CoursesService {
 
   constructor(private http: HttpClient, private globalLoaderService: GlobalLoaderService) {}
 
-  getList(start: string, count: string, textFragment: string): Observable<VideoRecord[]> {
+  getList(
+    start: string | number,
+    count: string | number,
+    textFragment: string
+  ): Observable<VideoRecord[]> {
     this.globalLoaderService.runLoading();
-
     return this.http
-      .get(BASE_URL, { params: { start, count, textFragment } })
+      .get(BASE_URL, {
+        params: {
+          start: `${start}`,
+          count: `${count}`,
+          textFragment
+        }
+      })
       .pipe(
         tap(() => this.globalLoaderService.stopLoading()),
         map((response: VideoCourseBackend[]) => response.map(this.mapToCourse)),
@@ -53,12 +62,12 @@ export class CoursesService {
       );
   }
 
-  updateCourse(course: VideoRecord): Observable<VideoCourse> {
+  updateCourse(courseId: string | number, course: Partial<VideoRecord>): Observable<VideoCourse> {
     const updatedCourse = this.mapToCourseBE(course);
 
     this.globalLoaderService.runLoading();
     return this.http
-      .patch(`${BASE_URL}/${updatedCourse.id}`, updatedCourse)
+      .patch(`${BASE_URL}/${courseId}`, updatedCourse)
       .pipe(
         tap(() => this.globalLoaderService.stopLoading()),
         map(this.mapToCourse),

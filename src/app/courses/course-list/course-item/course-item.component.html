@@ -10,7 +10,7 @@
     <p class="course-item__desc">{{item.description}}</p>
   </div>
   <div class="course-item__controls">
-    <button [routerLink]="['./', item.id]" class="course-item__btn">Edit</button>
-    <button (click)="click()" class="course-item__btn course-item__btn--delete">Delete</button>
+    <button (click)="edit()" class="course-item__btn">Edit</button>
+    <button (click)="delete()" class="course-item__btn course-item__btn--delete">Delete</button>
   </div>
 </article>
