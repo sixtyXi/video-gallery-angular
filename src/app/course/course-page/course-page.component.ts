@@ -42,6 +42,7 @@ export class CoursePageComponent implements OnInit {
         }
       })
     );
+    this.course$.subscribe();
   }
 
   onSubmit() {
