@@ -34,15 +34,22 @@ export class CoursePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.course$ = this.store.select(fromStore.getCourse).pipe(
-      tap((course) => {
-        if (course) {
-          this.fillForm(course);
-          this.courseId = course.id;
-        }
-      })
-    );
-    this.course$.subscribe();
+    this.route.params.subscribe((data) => {
+      if (data.id) {
+        this.course$ = this.store.select(fromStore.getCourse).pipe(
+          tap((course) => {
+            if (course) {
+              this.fillForm(course);
+              this.courseId = course.id;
+            }
+          })
+        );
+        this.course$.subscribe();
+      } else {
+        this.course$ = null;
+        this.courseId = '';
+      }
+    });
   }
 
   onSubmit() {
