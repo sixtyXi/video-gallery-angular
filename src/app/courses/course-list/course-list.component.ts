@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, from, Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
-import { CoursesService } from '../services/courses.service';
-import { Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import * as Courses from '../actions/courses.actions';
+import * as fromStore from '../../store/reducers';
 
 const LOAD_TO_COUNT = 5;
 
@@ -11,54 +14,57 @@ const LOAD_TO_COUNT = 5;
   templateUrl: './course-list.component.html',
   styleUrls: [ './course-list.component.less' ]
 })
-export class CourseListComponent implements OnInit, OnDestroy {
-  public courses: VideoRecord[] = [];
+export class CourseListComponent implements OnInit {
+  public courses$: Observable<VideoRecord[]>;
   public filter: string = '';
   private pageNumber: number;
   private coursePerPage = LOAD_TO_COUNT;
-  private ngUnsubscribe = new Subject();
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
-    this.init();
-  }
-
-  init() {
+    this.courses$ = this.store.select(fromStore.getCoursesList);
     this.pageNumber = 0;
-    this.getList(`${this.pageNumber}`, `${this.coursePerPage}`, this.filter);
+    this.initList();
   }
 
-  getList(start: string, count: string, textFragment: string): void {
-    this.coursesService
-      .getList(start, count, textFragment)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((res: VideoRecord[]) => (this.courses = res));
+  initList() {
+    this.store.dispatch(
+      new Courses.CourseListRequested({
+        start: this.pageNumber,
+        count: this.coursePerPage,
+        textFragment: this.filter
+      })
+    );
   }
 
   onLoadMore(): void {
     this.pageNumber++;
     const start = this.pageNumber * this.coursePerPage;
 
-    this.getList(`${start}`, `${this.coursePerPage}`, this.filter);
+    this.store.dispatch(
+      new Courses.CourseListRequested({
+        start,
+        count: this.coursePerPage,
+        textFragment: this.filter
+      })
+    );
   }
 
   deleteById(id: number): void {
     if (confirm('Do you really want to delete this course?')) {
-      this.coursesService
-        .deleteCourseById(id)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => this.init());
+      this.store.dispatch(new Courses.CourseDeleteRequested({ id }));
+      this.initList();
     }
   }
 
-  filterBy(text: string): void {
-    this.filter = text;
-    this.init();
+  editById(id: number): void {
+    this.store.dispatch(new Courses.CourseRequested({ id }));
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+  filterBy(text: string): void {
+    this.pageNumber = 0;
+    this.filter = text;
+    this.initList();
   }
 }

@@ -1,11 +1,12 @@
 <app-control-panel (onSearch)="filterBy($event)"></app-control-panel>
 
-<div *ngIf="courses.length; then courseList else noData"></div>
+<div *ngIf="(courses$ | async).length > 0; then courseList else noData"></div>
 
 <ng-template #courseList>
-  <app-course-item *ngFor="let item of ( courses | orderBy : 'creationDate')" 
+  <app-course-item *ngFor="let item of ( courses$ | async | orderBy : 'creationDate')" 
     [item]="item"
-    (onDelete)="deleteById($event)">
+    (onDelete)="deleteById($event)"
+    (onEdit)="editById($event)">
   </app-course-item>
   <button (click)="onLoadMore()" class="load-more-btn" type="button">Load More</button>
 </ng-template>

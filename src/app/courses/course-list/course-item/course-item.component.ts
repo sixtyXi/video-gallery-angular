@@ -10,10 +10,15 @@ import { VideoCourse } from '../../../shared/models/VideoCourse.model';
 export class CourseItemComponent {
   @Input() item: VideoCourse;
   @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
+  @Output() onEdit: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
-  click(): void {
+  delete(): void {
     this.onDelete.emit(this.item.id);
+  }
+
+  edit(): void {
+    this.onEdit.emit(this.item.id);
   }
 }

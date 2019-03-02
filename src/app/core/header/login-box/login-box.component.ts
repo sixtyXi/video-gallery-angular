@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
-import { Person } from 'src/app/shared/models/Person.interface';
+import { Store } from '@ngrx/store';
+
+import * as Auth from '../../actions/auth';
+import * as fromStore from '../../../store/reducers';
 
 @Component({
   selector: 'app-login-box',
@@ -11,32 +13,31 @@ import { Person } from 'src/app/shared/models/Person.interface';
   styleUrls: [ './login-box.component.less' ]
 })
 export class LoginBoxComponent implements OnInit, OnDestroy {
-  public userLogin = '';
+  public userLogin$: Observable<string>;
+  public isAuth$: Observable<boolean>;
   private ngUnsubscribe = new Subject();
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(private store: Store<fromStore.State>, private router: Router) {
+    this.isAuth$ = this.store.select(fromStore.getLoggedIn);
+    this.userLogin$ = this.store.select(fromStore.getUserLogin);
+  }
 
   ngOnInit() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        if (this.authService.isAuth() && !this.userLogin) {
+        if (!this.isAuth$) {
           const id = localStorage.getItem('id');
 
-          this.authService
-            .getUserInfo(id)
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe((res: Person) => {
-              this.userLogin = res.login;
-            });
+          if (id) {
+            this.store.dispatch(new Auth.UserRequested(id));
+          }
         }
       });
   }
 
   logOff() {
-    this.userLogin = '';
-    this.authService.logOut();
-    this.router.navigate([ 'login' ]);
+    this.store.dispatch(new Auth.Logout());
   }
 
   ngOnDestroy() {

@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Subject, Observable } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { CoursesService } from 'src/app/courses/services/courses.service';
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
-import { Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
-
+import * as fromStore from '../../store/reducers/index';
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
@@ -13,15 +14,17 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy {
   public course: VideoRecord = null;
-
+  public isAuth$: Observable<boolean>;
   private ngUnsubscribe = new Subject();
 
   constructor(
-    public authService: AuthService,
+    private store: Store<fromStore.State>,
     private coursesService: CoursesService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+    this.isAuth$ = this.store.select(fromStore.getLoggedIn);
+  }
 
   ngOnInit() {
     this.router.events
