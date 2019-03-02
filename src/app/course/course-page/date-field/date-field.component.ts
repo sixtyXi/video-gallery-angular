@@ -12,4 +12,8 @@ export class DateFieldComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  get date() {
+    return this.parentForm.get('creationDate');
+  }
 }

@@ -1,13 +1,15 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { DatePipe } from '@angular/common';
 
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
 import * as fromStore from '../../store/reducers';
 import * as Courses from '../../courses/actions/courses.actions';
+import { DurationFieldComponent } from './duration-field/duration-field.component';
 
 @Component({
   selector: 'app-course-page',
@@ -18,18 +20,26 @@ export class CoursePageComponent implements OnInit {
   public course$: Observable<VideoRecord>;
   private courseId: string | number;
   public form: FormGroup;
+  @ViewChild(DurationFieldComponent) durationField;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromStore.State>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
     this.form = this.fb.group({
-      title: [ '', Validators.required ],
-      description: [ '', Validators.required ],
-      creationDate: [ '', Validators.required ],
-      duration: [ '', Validators.required ]
+      title: [ '', [ Validators.required, Validators.maxLength(50) ] ],
+      description: [ '', [ Validators.required, Validators.maxLength(500) ] ],
+      creationDate: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/)
+        ]
+      ],
+      duration: [ '', [ Validators.required, Validators.pattern('[1-9]{1}[0-9]*') ] ]
     });
   }
 
@@ -50,6 +60,18 @@ export class CoursePageComponent implements OnInit {
         this.courseId = '';
       }
     });
+  }
+
+  get title() {
+    return this.form.get('title');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get creationDate() {
+    return this.form.get('creationDate');
   }
 
   onSubmit() {
@@ -78,15 +100,16 @@ export class CoursePageComponent implements OnInit {
 
   mapToControls(course: VideoRecord): object {
     let { id, topRated, creationDate, ...controls } = course;
-
-    controls['creationDate'] = creationDate.toISOString().substring(0, 10);
+    const date = creationDate.toISOString().substring(0, 10);
+    controls['creationDate'] = this.datePipe.transform(date, 'dd/MM/yyyy');
     return controls;
   }
 
   mapToModel(controlValues): Partial<VideoRecord> {
     const { creationDate, ...values } = controlValues;
+    const [ day, month, year ] = creationDate.split('/');
 
-    values['creationDate'] = new Date(creationDate);
+    values['creationDate'] = new Date(`${year}-${month}-${day}`);
     return values;
   }
 }

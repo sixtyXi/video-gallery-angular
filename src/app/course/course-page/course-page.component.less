@@ -23,4 +23,16 @@
     margin-right: 10px;
     cursor: pointer;
   }
+
+  &__error-msg {
+    display: inline-block;
+    margin-left: 10px;
+    color: red;
+    font-size: 14px;
+
+    & + .course-form__textarea,
+    & + .course-form__input {
+      border: 1px solid red;
+    }
+  }
 }

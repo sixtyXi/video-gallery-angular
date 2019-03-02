@@ -1,13 +1,20 @@
 .duration-field {
-  &__label {
-    display: block;
-  }
-
   &__input {
     width: 210px;
   }
 
   &__formatted-value {
     margin-left: 10px;
+  }
+
+  &__error-msg {
+    display: inline-block;
+    margin-left: 10px;
+    color: red;
+    font-size: 14px;
+
+    & + div .duration-field__input {
+      border: 1px solid red;
+    }
   }
 }

@@ -1,4 +1,14 @@
 <div [formGroup]="parentForm" class="form-field date-field">
   <label for="date">Date:</label>
-  <input formControlName="creationDate" [value]="parentForm.get('creationDate').value | date: 'yyyy-MM-dd'" class="date-field__input" type="date" id="date" required>
+
+  <div *ngIf="date.invalid && (date.dirty || date.touched)" class="date-field__error-msg">
+    <span *ngIf="date.errors.required">
+      Date is required
+    </span>
+    <span *ngIf="date.errors.pattern">
+      Date format must be dd/mm/yyyy
+    </span>
+  </div>
+
+  <input formControlName="creationDate" [value]="this.date.value" class="date-field__input" type="text" id="date" required>
 </div>

@@ -4,9 +4,11 @@ import { DateFieldComponent } from './course-page/date-field/date-field.componen
 import { DurationFieldComponent } from './course-page/duration-field/duration-field.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [ CoursePageComponent, DateFieldComponent, DurationFieldComponent ],
-  imports: [ SharedModule, ReactiveFormsModule ]
+  imports: [ SharedModule, ReactiveFormsModule ],
+  providers: [ DatePipe ]
 })
 export class CourseModule {}

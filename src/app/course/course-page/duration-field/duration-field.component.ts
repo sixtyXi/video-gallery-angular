@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -6,10 +6,12 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './duration-field.component.html',
   styleUrls: [ './duration-field.component.less' ]
 })
-export class DurationFieldComponent implements OnInit {
+export class DurationFieldComponent {
   @Input() parentForm: FormGroup;
 
   constructor() {}
 
-  ngOnInit() {}
+  get duration() {
+    return this.parentForm.get('duration');
+  }
 }
