@@ -19,6 +19,7 @@ import { AuthEffects } from './core/store/effects/auth.effects';
 import { CoursesEffects } from './courses/effects/courses.effects';
 import { reducers, metaReducers } from './store/reducers';
 import { environment } from '../environments/environment';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [ AppComponent, PageNotFoundComponent ],
   imports: [
@@ -33,7 +34,8 @@ import { environment } from '../environments/environment';
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
-    EffectsModule.forRoot([ AuthEffects, CoursesEffects ])
+    EffectsModule.forRoot([ AuthEffects, CoursesEffects ]),
+    NoopAnimationsModule
   ],
   providers: [ { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
   bootstrap: [ AppComponent ]
