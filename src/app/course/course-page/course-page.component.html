@@ -34,6 +34,8 @@
 
   <app-duration-field [parentForm]="form"></app-duration-field>
 
+  <app-authors-field></app-authors-field>
+
   <button class="course-form__btn" type="submit" [disabled]="!form.valid">Save</button>
   <button (click)="onCancel()" class="course-form__btn" type="button">Cancel</button>
 </form>

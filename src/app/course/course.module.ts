@@ -5,9 +5,10 @@ import { DurationFieldComponent } from './course-page/duration-field/duration-fi
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { AuthorsFieldComponent } from './course-page/authors-field/authors-field.component';
 
 @NgModule({
-  declarations: [ CoursePageComponent, DateFieldComponent, DurationFieldComponent ],
+  declarations: [ CoursePageComponent, DateFieldComponent, DurationFieldComponent, AuthorsFieldComponent ],
   imports: [ SharedModule, ReactiveFormsModule ],
   providers: [ DatePipe ]
 })
