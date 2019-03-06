@@ -1,33 +1,38 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { DatePipe } from '@angular/common';
 
 import { VideoRecord } from 'src/app/shared/models/VideoRecord.interface';
 import * as fromStore from '../../store/reducers';
 import * as Courses from '../../courses/actions/courses.actions';
-import { DurationFieldComponent } from './duration-field/duration-field.component';
+import { AuthorsService } from '../services/authors.service';
+import { Author } from 'src/app/shared/models/Author.model';
+import { AuthorDTO } from 'src/app/shared/models/AuthorDTO.interface';
 
 @Component({
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: [ './course-page.component.less' ]
 })
-export class CoursePageComponent implements OnInit {
+export class CoursePageComponent implements OnInit, OnDestroy {
   public course$: Observable<VideoRecord>;
   private courseId: string | number;
   public form: FormGroup;
-  @ViewChild(DurationFieldComponent) durationField;
+  public authors: Author[] = [];
+  public selectedAuthors: Author[] = [];
+  private ngUnsubscribe = new Subject();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private store: Store<fromStore.State>,
     private fb: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private authorsService: AuthorsService
   ) {
     this.form = this.fb.group({
       title: [ '', [ Validators.required, Validators.maxLength(50) ] ],
@@ -45,12 +50,13 @@ export class CoursePageComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((data) => {
-      if (data.id) {
+      if (data.id !== 'new') {
         this.course$ = this.store.select(fromStore.getCourse).pipe(
           tap((course) => {
             if (course) {
               this.fillForm(course);
               this.courseId = course.id;
+              this.selectedAuthors = course.authors;
             }
           })
         );
@@ -58,8 +64,18 @@ export class CoursePageComponent implements OnInit {
       } else {
         this.course$ = null;
         this.courseId = '';
+        this.selectedAuthors = [];
       }
     });
+
+    this.authorsService
+      .getAuthors()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((authors: AuthorDTO[]) => {
+        this.authors = authors.map(
+          (author) => new Author(author.id, author.firstName, author.lastName)
+        );
+      });
   }
 
   get title() {
@@ -98,8 +114,16 @@ export class CoursePageComponent implements OnInit {
     this.form.setValue(controlValues);
   }
 
+  addAuthor(author: Author) {
+    this.selectedAuthors.push(author);
+  }
+
+  removeAuthor(removedAuthor: Author) {
+    this.selectedAuthors = this.selectedAuthors.filter((author) => author.id !== removedAuthor.id);
+  }
+
   mapToControls(course: VideoRecord): object {
-    let { id, topRated, creationDate, ...controls } = course;
+    let { id, topRated, creationDate, authors, ...controls } = course;
     const date = creationDate.toISOString().substring(0, 10);
     controls['creationDate'] = this.datePipe.transform(date, 'dd/MM/yyyy');
     return controls;
@@ -110,6 +134,12 @@ export class CoursePageComponent implements OnInit {
     const [ day, month, year ] = creationDate.split('/');
 
     values['creationDate'] = new Date(`${year}-${month}-${day}`);
+    values['authors'] = this.selectedAuthors;
     return values;
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

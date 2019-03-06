@@ -1,4 +1,5 @@
 import { VideoRecord } from './VideoRecord.interface';
+import { Author } from './Author.model';
 
 export class VideoCourse implements VideoRecord {
   constructor(
@@ -7,6 +8,7 @@ export class VideoCourse implements VideoRecord {
     public creationDate: Date,
     public duration: number,
     public description: string,
-    public topRated: boolean
+    public topRated: boolean,
+    public authors: Author[]
   ) {}
 }

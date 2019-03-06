@@ -1,6 +1,6 @@
-import { VideoCourse } from '../models/VideoCourse.model';
+import { VideoRecord } from '../models/VideoRecord.interface';
 
-export const COURSES: VideoCourse[] = [
+export const COURSES: VideoRecord[] = [
   {
     id: 1,
     title: 'video course 1',
