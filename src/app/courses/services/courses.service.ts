@@ -6,6 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { VideoCourseBackend } from './VideoCourseBackend.interface';
 import { GlobalLoaderService } from 'src/app/globalLoader/global-loader.service';
+import { Author } from 'src/app/shared/models/Author.model';
 
 const BASE_URL = 'http://localhost:3004/courses';
 
@@ -13,8 +14,6 @@ const BASE_URL = 'http://localhost:3004/courses';
   providedIn: 'root'
 })
 export class CoursesService {
-  public courses: VideoRecord[] = [];
-
   constructor(private http: HttpClient, private globalLoaderService: GlobalLoaderService) {}
 
   getList(
@@ -92,7 +91,8 @@ export class CoursesService {
       new Date(item.date),
       item.length,
       item.description,
-      item.isTopRated
+      item.isTopRated,
+      item.authors.map((author) => new Author(author.id, author.firstName, author.lastName))
     );
   }
 
@@ -103,7 +103,8 @@ export class CoursesService {
       date: item.creationDate.toISOString(),
       length: item.duration,
       description: item.description,
-      isTopRated: item.topRated
+      isTopRated: item.topRated,
+      authors: item.authors
     };
   }
 

@@ -1,4 +1,4 @@
-import { Person } from 'src/app/shared/models/Person.interface';
+import { Author } from 'src/app/shared/models/Author.model';
 
 export interface VideoCourseBackend {
   id?: number;
@@ -6,6 +6,6 @@ export interface VideoCourseBackend {
   description: string;
   isTopRated: boolean;
   date: string;
-  authors?: Person[];
+  authors?: Author[];
   length: number;
 }
