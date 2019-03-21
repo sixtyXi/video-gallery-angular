@@ -1,2 +1,2 @@
-<input [formControl]="searchField" class="search-control__input" type="text" placeholder="Text to search">
-<button [routerLink]="['/courses/new']" routerLinkActive="router-link-active"  class="add-control-btn" type="button">Add course</button>
+<input [formControl]="searchField" class="search-control__input" type="text" placeholder="{{ 'CONTROL_PANEL.SEARCH' | translate }}">
+<button [routerLink]="['/courses/new']" routerLinkActive="router-link-active"  class="add-control-btn" type="button">{{ 'CONTROL_PANEL.ADD_BTN' | translate}}</button>

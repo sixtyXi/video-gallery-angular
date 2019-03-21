@@ -10,7 +10,7 @@
     <p class="course-item__desc">{{item.description}}</p>
   </div>
   <div class="course-item__controls">
-    <button (click)="edit()" class="course-item__btn">Edit</button>
-    <button (click)="delete()" class="course-item__btn course-item__btn--delete">Delete</button>
+    <button (click)="edit()" class="course-item__btn">{{ 'COURSE.EDIT' | translate}}</button>
+    <button (click)="delete()" class="course-item__btn course-item__btn--delete">{{ 'COURSE.DELETE' | translate}}</button>
   </div>
 </article>

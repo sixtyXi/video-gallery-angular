@@ -1,0 +1,16 @@
+{
+  "LOGIN": {
+    "BUTTON": "Выйти"
+  },
+  "CONTROL_PANEL": {
+    "SEARCH": "Поиск",
+    "ADD_BTN": "Добавить курс"
+  },
+  "COURSE": {
+    "EDIT": "Изменить",
+    "DELETE": "Удалить"
+  },
+  "COURSE_LIST": {
+    "LOAD_MORE": "Загрузить еще"
+  }
+}

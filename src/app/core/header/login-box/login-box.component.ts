@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as Auth from '../../actions/auth';
 import * as fromStore from '../../../store/reducers';
@@ -17,7 +18,11 @@ export class LoginBoxComponent implements OnInit, OnDestroy {
   public isAuth$: Observable<boolean>;
   private ngUnsubscribe = new Subject();
 
-  constructor(private store: Store<fromStore.State>, private router: Router) {
+  constructor(
+    private store: Store<fromStore.State>,
+    private router: Router,
+    public translate: TranslateService
+  ) {
     this.isAuth$ = this.store.select(fromStore.getLoggedIn);
     this.userLogin$ = this.store.select(fromStore.getUserLogin);
   }
