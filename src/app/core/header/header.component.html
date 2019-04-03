@@ -1,0 +1,9 @@
+<header class="header">
+  <div class="content-wrapper header__wrapper">
+    <app-logo></app-logo>
+    <app-login-box></app-login-box>
+    <select class="header__translate" #langSelect (change)="changeLang(langSelect.value)">
+      <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+    </select>
+  </div>
+</header>

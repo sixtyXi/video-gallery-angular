@@ -1,0 +1,4 @@
+<div *ngIf="isAuth$ | async" class="login-box">
+  <span class="login-box__username">{{userLogin$ | async}}</span>
+  <button (click)="logOff()" class="login-box__btn" type="button">{{ 'LOGIN.BUTTON' | translate }}</button>
+</div>

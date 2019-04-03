@@ -1,0 +1,16 @@
+<article class="course-item" [ngClass]="{'course-item--top': item.topRated}" [appStyleByDate]="item.creationDate">
+  <div class="course-item__content-wrapper">
+    <header class="course-item__header">
+      <h2 class="course-item__title">{{item.title | titlecase}}</h2>
+      <div class="course-item__params">
+        <span class="course-item__duration">{{item.duration | formatDuration}}</span>
+        <span class="course-item__date">{{item.creationDate | date:'MM.dd.yyyy'}}</span>
+      </div>
+    </header>
+    <p class="course-item__desc">{{item.description}}</p>
+  </div>
+  <div class="course-item__controls">
+    <button (click)="edit()" class="course-item__btn">{{ 'COURSE.EDIT' | translate}}</button>
+    <button (click)="delete()" class="course-item__btn course-item__btn--delete">{{ 'COURSE.DELETE' | translate}}</button>
+  </div>
+</article>

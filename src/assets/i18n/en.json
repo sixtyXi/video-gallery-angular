@@ -1,0 +1,16 @@
+{
+  "LOGIN": {
+    "BUTTON": "Lof Off"
+  },
+  "CONTROL_PANEL": {
+    "SEARCH": "Text to search",
+    "ADD_BTN": "Add course"
+  },
+  "COURSE": {
+    "EDIT": "Edit",
+    "DELETE": "Delete"
+  },
+  "COURSE_LIST": {
+    "LOAD_MORE": "Load more"
+  }
+}

@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.course-form {
+  width: 100%;
+  margin: 20px auto auto;
+
+  &__input {
+    display: block;
+    width: 100%;
+  }
+
+  &__textarea {
+    width: 100%;
+    resize: none;
+  }
+
+  &__btn {
+    width: 100px;
+    margin-top: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  &__error-msg {
+    display: inline-block;
+    margin-left: 10px;
+    color: red;
+    font-size: 14px;
+
+    & + .course-form__textarea,
+    & + .course-form__input {
+      border: 1px solid red;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.date-field {
+  &__input {
+    display: block;
+    width: 210px;
+  }
+
+  &__error-msg {
+    display: inline-block;
+    margin-left: 10px;
+    color: red;
+    font-size: 14px;
+
+    & + .date-field__input {
+      border: 1px solid red;
+    }
+  }
+}

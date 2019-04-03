@@ -1,0 +1,18 @@
+<app-control-panel (onSearch)="filterBy($event)"></app-control-panel>
+
+<div *ngIf="(courses$ | async).length > 0; then courseList else noData"></div>
+
+<ng-template #courseList>
+  <app-course-item *ngFor="let item of ( courses$ | async | orderBy : 'creationDate')"
+    [item]="item"
+    (onDelete)="deleteById($event)"
+    (onEdit)="editById($event)">
+  </app-course-item>
+  <button (click)="onLoadMore()" class="load-more-btn" type="button"> {{ 'COURSE_LIST.LOAD_MORE' | translate}}</button>
+</ng-template>
+
+<ng-template #noData>
+  <p class="no-data-msg">
+    <span class="no-data-msg__content">No data. Feel free to add new course</span>
+  </p>
+</ng-template>

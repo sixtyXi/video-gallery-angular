@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="course-form">
+
+  <div class="form-field">
+    <label class="course-form__label" for="title">Title:</label>
+
+    <div *ngIf="title.invalid && (title.dirty || title.touched)" class="course-form__error-msg">
+      <span *ngIf="title.errors.required">
+        Title is required
+      </span>
+      <span *ngIf="title.errors.maxlength">
+        Title must be less than 50 characters long.
+      </span>
+    </div>
+
+    <input formControlName="title" class="course-form__input" type="text" id="title">
+  </div>
+
+  <div class="form-field">
+    <label for="desc">Description:</label>
+
+    <div *ngIf="description.invalid && (description.dirty || description.touched)" class="course-form__error-msg">
+      <span *ngIf="description.errors.required">
+        Description is required
+      </span>
+      <span *ngIf="description.errors.maxlength">
+        Description must be less than 500 characters long.
+      </span>
+    </div>
+
+    <textarea formControlName="description" class="course-form__textarea" id="desc" cols="30" rows="10"></textarea>
+  </div>
+
+  <app-date-field [parentForm]="form"></app-date-field>
+
+  <app-duration-field [parentForm]="form"></app-duration-field>
+
+  <app-authors-field 
+    [allAuthors]="authors" 
+    [selectedAuthors]="selectedAuthors" 
+    (onAdd)="addAuthor($event)" 
+    (onRemove)="removeAuthor($event)">
+  </app-authors-field>
+
+  <button class="course-form__btn" type="submit" [disabled]="!form.valid">Save</button>
+  <button (click)="onCancel()" class="course-form__btn" type="button">Cancel</button>
+</form>

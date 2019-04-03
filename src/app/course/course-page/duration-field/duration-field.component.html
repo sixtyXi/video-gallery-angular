@@ -1,0 +1,16 @@
+<div [formGroup]="parentForm" class="form-field duration-field">
+  <label for="duration">Duration:</label>
+
+  <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="duration-field__error-msg">
+    <span *ngIf="duration.errors.required">
+      Date is required
+    </span>
+    <span *ngIf="duration.errors.pattern">
+      Duration must be a number
+    </span>
+  </div>
+  <div>
+    <input formControlName="duration" name="duration" class="duration-field__input" type="text" id="duration">
+    <span class="duration-field__formatted-value">{{this.duration.value | formatDuration}}</span>
+  </div>
+</div>
