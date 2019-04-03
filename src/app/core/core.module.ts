@@ -6,6 +6,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { LogoComponent } from './header/logo/logo.component';
 import { LoginBoxComponent } from './header/login-box/login-box.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { AppRoutingModule } from '../app-routing.module';
     LogoComponent,
     LoginBoxComponent
   ],
-  imports: [ CommonModule, AppRoutingModule ],
+  imports: [ CommonModule, AppRoutingModule, TranslateModule ],
   exports: [ HeaderComponent, FooterComponent, BreadcrumbsComponent ]
 })
 export class CoreModule {}

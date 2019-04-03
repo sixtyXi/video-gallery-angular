@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { VideoCourse } from '../../../shared/models/VideoCourse.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-course-item',
@@ -12,7 +13,7 @@ export class CourseItemComponent {
   @Output() onDelete: EventEmitter<number> = new EventEmitter<number>();
   @Output() onEdit: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {}
+  constructor(public translate: TranslateService) {}
 
   delete(): void {
     this.onDelete.emit(this.item.id);

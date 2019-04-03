@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { filter, debounceTime } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-control-panel',
@@ -11,7 +12,7 @@ export class ControlPanelComponent implements OnInit {
   @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
   public searchField: FormControl;
 
-  constructor() {
+  constructor(public translate: TranslateService) {
     this.searchField = new FormControl();
   }
 

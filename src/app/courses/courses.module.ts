@@ -8,6 +8,7 @@ import { OrderByPipe } from './course-list/order-by.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     StyleByDateDirective,
     OrderByPipe
   ],
-  imports: [ SharedModule, AppRoutingModule, ReactiveFormsModule ],
+  imports: [ SharedModule, AppRoutingModule, ReactiveFormsModule, TranslateModule ],
   exports: [ CoursesPageComponent ]
 })
 export class CoursesModule {}
